@@ -74,11 +74,20 @@ def index23():
         predictions_future.columns = ['Sales', 'Date']
         html = predictions_future.to_html()
         st_class.stc_html = html
-        return jsonify({"Data": predictions_future.to_json(orient='records', lines=True)})
+        dict_res = {}
+        list_data = []
+        list_sales = []
+        for i in range(len(predictions_future)):
+            list_sales.append(predictions_future.loc[i, "Sales"])
+            list_data.append(predictions_future.loc[i, "Date"])
+            dict_res['Date'] = list_data
+            dict_res['Sales'] = list_sales
+
+        return dict_res
 
     except Exception as error:
         print("Some Error Occurred", error)
-        return "Error Occurred"
+        return jsonify("Error Occurred")
 
 
 @pycaret.route("/algo")
@@ -112,7 +121,7 @@ def index24():
 
     except Exception as error:
         print("Some Error Occurred", error)
-        return "Error Occurred"
+        return jsonify("Error Occurred")
 
 
 @pycaret.route("/pre_values", methods=['GET'])
