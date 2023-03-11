@@ -26,12 +26,12 @@ def index():
             df = pd.read_csv(file)
             records = df.to_dict("records")
             collection.insert_many(records)
-            return "DataFrame uploaded successfully!"
+            return jsonify("DataFrame uploaded successfully!")
     except pymongo.errors.ServerSelectionTimeoutError as error:
         print("Please Update IP in MongoDB")
     except:
         print("Some Error Occurred")
-        return "Error Occurred"
+        return jsonify("Error Occurred")
 
 @mongo2.route("/mongodbget", methods=['GET', 'POST'])
 def index22():
