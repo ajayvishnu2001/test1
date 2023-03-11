@@ -16,7 +16,7 @@ class st_class:
 
 @pand_rep.route("/")
 def ind14():
-    return "Home page"
+    return jsonify("Home Page")
 
 @pand_rep.route("/report_disp")
 def ind11():
@@ -35,6 +35,6 @@ def ind11():
 
     except Exception as error:
         print("Some Error Occurred", error)
-        return "Error Occurred"
+        return jsonify("Error Occurred")
 
 
