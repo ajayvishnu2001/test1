@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from pymongo import MongoClient
 import pandas as pd
 from ydata_profiling import ProfileReport
