@@ -4,8 +4,7 @@ import json
 from pycaret.regression import *
 import pandas as pd
 import numpy as np
-# import mysql.connector
-# from sqlalchemy import create_engine
+
 
 pycaret = Blueprint('forecast', __name__)
 
@@ -20,6 +19,10 @@ collection = db['test5']
 # class to store static variable
 class st_class:
     stc_html = ""
+    j_res = None
+
+    
+st = st_class()
 
 
 @pycaret.route("/forecast", methods=['GET', 'POST'])
@@ -74,16 +77,9 @@ def index23():
         predictions_future.columns = ['Sales', 'Date']
         html = predictions_future.to_html()
         st_class.stc_html = html
-        dict_res = {}
-        list_data = []
-        list_sales = []
-        for i in range(len(predictions_future)):
-            list_sales.append(predictions_future.loc[i, "Sales"])
-            list_data.append(predictions_future.loc[i, "Date"])
-            dict_res['Date'] = list_data
-            dict_res['Sales'] = list_sales
-
-        return dict_res
+        predictions_future['Date'] = predictions_future['Date'].astype(str)
+        st.j_res = predictions_future.to_json()
+        return st.j_res
 
     except Exception as error:
         print("Some Error Occurred", error)
@@ -126,4 +122,13 @@ def index24():
 
 @pycaret.route("/pre_values", methods=['GET'])
 def ind56():
-    return st_class.stc_html
+    return st.stc_html
+
+@pycaret.route("/only_values")
+def index265():
+    try:
+        return st.j_res
+
+    except Exception as error:
+        print("Some Error Occurred", error)
+        return jsonify("Error Occurred")
